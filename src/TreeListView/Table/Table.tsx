@@ -3,7 +3,7 @@ import type { PaginatedDocs } from "payload";
 
 import { ChevronIcon, SelectAll, SelectRow } from "@payloadcms/ui";
 import * as Collapsible from "@radix-ui/react-collapsible";
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useMemo, useState } from "react";
 
 import { generateTreeList } from "./generateTreeList.js";
 
@@ -81,14 +81,13 @@ export const Table: React.FC<Props> = ({ columns, data, enableRowSelections, isC
                   ) : (
                     <div aria-hidden="true" role="cell" />
                   )}
-                  {activeColumns.map((col, colIndex) => {
-                    const Component = col.renderedCells[row.originalIndex]?.type || "span";
-                    return (
+                  {activeColumns.map((col, colIndex) => (
+                    <Suspense fallback={<span />}>
                       <div className={`cell-${col.accessor}`} key={colIndex} role="cell">
-                        <Component {...col.renderedCells[row.originalIndex].props} />
+                        {col.renderedCells[row.originalIndex]}
                       </div>
-                    );
-                  })}
+                    </Suspense>
+                  ))}
                   <div className="cell-trigger" role="cell">
                     <Collapsible.Trigger asChild>
                       {hasChildren && (
