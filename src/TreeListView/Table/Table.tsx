@@ -82,8 +82,8 @@ export const Table: React.FC<Props> = ({ columns, data, enableRowSelections, isC
                     <div aria-hidden="true" role="cell" />
                   )}
                   {activeColumns.map((col, colIndex) => (
-                    <Suspense fallback={<span />}>
-                      <div className={`cell-${col.accessor}`} key={colIndex} role="cell">
+                    <Suspense key={colIndex} fallback={<span />}>
+                      <div className={`cell-${col.accessor}`} role="cell">
                         {col.renderedCells[row.originalIndex]}
                       </div>
                     </Suspense>
